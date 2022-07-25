@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from 'react';
 import { useRef, useState, useMemo, useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -142,6 +144,7 @@ export function CameraPage({ navigation }: Props): React.ReactElement {
       navigation.navigate('MediaPage', {
         path: media.path,
         type: type,
+        metaInfo: media,
       });
     },
     [navigation],

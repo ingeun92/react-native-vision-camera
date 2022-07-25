@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -26,6 +27,8 @@ export function App(): React.ReactElement | null {
   }
 
   const showPermissionsPage = cameraPermission !== 'authorized' || microphonePermission === 'not-determined';
+  // const showPermissionsPage = 'PermissionPage';
+
   return (
     <NavigationContainer>
       <Stack.Navigator

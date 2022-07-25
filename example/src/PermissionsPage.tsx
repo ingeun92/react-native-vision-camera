@@ -40,11 +40,11 @@ export function PermissionsPage({ navigation }: Props): React.ReactElement {
   return (
     <View style={styles.container}>
       <Image source={BANNER_IMAGE} style={styles.banner} />
-      <Text style={styles.welcome}>Welcome to{'\n'}Vision Camera.</Text>
+      <Text style={styles.welcome}>Welcome to{'\n'}NFT Camera.</Text>
       <View style={styles.permissionsContainer}>
         {cameraPermissionStatus !== 'authorized' && (
           <Text style={styles.permissionText}>
-            Vision Camera needs <Text style={styles.bold}>Camera permission</Text>.{' '}
+            NFT Camera needs <Text style={styles.bold}>Camera permission</Text>.
             <Text style={styles.hyperlink} onPress={requestCameraPermission}>
               Grant
             </Text>
@@ -52,7 +52,7 @@ export function PermissionsPage({ navigation }: Props): React.ReactElement {
         )}
         {microphonePermissionStatus !== 'authorized' && (
           <Text style={styles.permissionText}>
-            Vision Camera needs <Text style={styles.bold}>Microphone permission</Text>.{' '}
+            NFT Camera needs <Text style={styles.bold}>Microphone permission</Text>.
             <Text style={styles.hyperlink} onPress={requestMicrophonePermission}>
               Grant
             </Text>
