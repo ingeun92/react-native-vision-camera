@@ -142,7 +142,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
     const sendData: sendData = {
       name: 'Test220725',
       description: 'Test NFT for NFTCamera',
-      image: 'mediaURI',
+      image: path,
       attributes: [
         { trait_type: 'Level', value: '5' },
         { trait_type: 'Str', value: '500' },
@@ -173,8 +173,11 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         // "http://localhost:3000/besu/mintNFT",
         sendData,
       );
+
+      Alert.alert('Minting was successful!');
     } catch (error: any) {
       console.log(error.message);
+      Alert.alert('Minting failed!');
     }
   };
 
@@ -208,6 +211,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                 <Text style={styles.metaInfo}>
                   Width : "{JSON.stringify(metaInfo.width)}" {'\n'}
                   Height : "{JSON.stringify(metaInfo.height)}" {'\n'}
+                  Path : "{JSON.stringify(path)}" {'\n'}
                   DPIWidth : "{JSON.stringify(metaInfo.metadata.DPIWidth)}" {'\n'}
                   DPIHeight : "{JSON.stringify(metaInfo.metadata.DPIHeight)}" {'\n'}
                   Model : {JSON.stringify(metaInfo.metadata['{TIFF}'].Model)} {'\n'}
@@ -226,7 +230,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                   )}
                 </Text>
               </ScrollView>
-              <NaverMapView style={{ width: '100%', height: '50%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
+              <NaverMapView style={{ width: '100%', height: '45%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
                 <Marker coordinate={location} />
               </NaverMapView>
             </>
@@ -327,11 +331,10 @@ const styles = StyleSheet.create({
   },
   metaInfo: {
     position: 'absolute',
-    top: SAFE_AREA_PADDING.paddingTop + 15,
+    top: SAFE_AREA_PADDING.paddingTop + 10,
     left: SAFE_AREA_PADDING.paddingLeft,
     backgroundColor: 'rgba(59, 59, 59, 0.6)',
     width: '92%',
-    height: 160,
     color: 'white',
     fontSize: 15,
     textAlign: 'left',
@@ -340,11 +343,10 @@ const styles = StyleSheet.create({
   },
   deviceInfo: {
     position: 'absolute',
-    top: SAFE_AREA_PADDING.paddingTop + 200,
+    top: SAFE_AREA_PADDING.paddingTop + 280,
     left: SAFE_AREA_PADDING.paddingLeft,
     backgroundColor: 'rgba(59, 59, 59, 0.6)',
     width: '92%',
-    height: 80,
     color: 'white',
     fontSize: 12,
     textAlign: 'left',
