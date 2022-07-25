@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-native/no-inline-styles */
@@ -53,6 +54,8 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
   const [enableMetadataView, setEnableMetaDataView] = useState(false);
 
+  const [uniqueId, setUniqueId] = useState<string>('');
+
   const onMediaLoad = useCallback((event: OnLoadData | NativeSyntheticEvent<ImageLoadEventData>) => {
     if (isVideoOnLoadEvent(event)) {
       console.log(
@@ -76,7 +79,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
 
       const hasPermission = await requestSavePermission();
       if (!hasPermission) {
-        Alert.alert('Permission denied!', 'NFT Camera does not have permission to save the media to your camera roll.');
+        Alert.alert('Permission denied!', 'NFTCamera does not have permission to save the media to your camera roll.');
         return;
       }
       await CameraRoll.save(`file://${path}`, {
@@ -129,8 +132,13 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
     contractAddress: unknown;
   }
 
+  const getUuid = async (): Promise<void> => {
+    const uuid = await DeviceInfo.getUniqueId();
+    setUniqueId(uuid);
+  };
+
   const mintPicture = async (): Promise<void> => {
-    // eslint-disable-next-line no-shadow
+    getUuid();
     const sendData: sendData = {
       name: 'Test220725',
       description: 'Test NFT for NFTCamera',
@@ -152,13 +160,11 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
       verification: {
         service: 'B-SquareLab',
         hash: '0xhash',
-        uuid: 'uuid',
+        uuid: uniqueId,
         signature: '0xsig',
       },
       userPk: Config.USER_PK,
-      // userPk: '004c011ef6840204c23e11da5476e621eb8b3c0e934585fa8a12d2b2b2606f00',
       contractAddress: Config.CONTRACT_ADDRESS,
-      // contractAddress: '0x4473f5f742D927e39dDbF5cF50cA597295cD21E4',
     };
 
     try {
@@ -211,7 +217,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                 </Text>
                 <Text style={styles.deviceInfo}>
                   UTC : {new Date().toISOString()} {'\n'}
-                  UUID : {DeviceInfo.getUniqueId()} {'\n'}
+                  UUID : {uniqueId} {'\n'}
                   {location != null && (
                     <>
                       Latitude : {location.latitude} {'\n'}
@@ -273,7 +279,12 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         <IonIcon name="cloud-done-outline" size={35} color="white" style={styles.icon} />
       </PressableOpacity>
 
-      <PressableOpacity style={styles.metadataButton} onPress={() => setEnableMetaDataView(!enableMetadataView)}>
+      <PressableOpacity
+        style={styles.metadataButton}
+        onPress={() => {
+          setEnableMetaDataView(!enableMetadataView);
+          getUuid();
+        }}>
         <IonIcon name="shield-checkmark-outline" size={35} color={enableMetadataView ? 'blue' : 'white'} style={styles.icon} />
       </PressableOpacity>
 
