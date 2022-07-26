@@ -148,7 +148,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const mintPicture = async (): Promise<void> => {
     getUuid();
     const sendData: sendData = {
-      name: 'Test220725',
+      name: 'Test220726',
       description: 'Test NFT for NFTCamera',
       image: path,
       attributes: [
@@ -169,7 +169,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         service: 'B-Square Lab',
         mediaHash: hash,
         uuid: uniqueId,
-        dateTime: metaInfo.metadata['{TIFF}'].DateTime,
+        dateTime: new Date().toLocaleString(),
         latitude: location.latitude,
         longitude: location.longitude,
         signature: signature,
@@ -352,22 +352,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(59, 59, 59, 0.6)',
     width: '92%',
     color: 'white',
-    fontSize: 15,
+    fontSize: 13,
     textAlign: 'left',
     paddingLeft: 10,
     paddingTop: 5,
+    paddingBottom: 5,
   },
   deviceInfo: {
     position: 'absolute',
-    top: SAFE_AREA_PADDING.paddingTop + 280,
+    top: SAFE_AREA_PADDING.paddingTop + 240,
     left: SAFE_AREA_PADDING.paddingLeft,
     backgroundColor: 'rgba(59, 59, 59, 0.6)',
     width: '92%',
     color: 'white',
-    fontSize: 12,
+    fontSize: 13,
     textAlign: 'left',
     paddingLeft: 10,
     paddingTop: 5,
+    paddingBottom: 5,
   },
   metadataButton: {
     position: 'absolute',
