@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -55,6 +56,8 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const [enableMetadataView, setEnableMetaDataView] = useState(false);
 
   const [uniqueId, setUniqueId] = useState<string>('');
+  const [hash, setHash] = useState<string>('0xhash');
+  const [signature, setSignature] = useState<string>('0xsig');
 
   const onMediaLoad = useCallback((event: OnLoadData | NativeSyntheticEvent<ImageLoadEventData>) => {
     if (isVideoOnLoadEvent(event)) {
@@ -102,17 +105,25 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
     longitude: number;
   }
 
-  interface data {
-    Width: number;
-    Height: number;
-    DPIWidth: number;
-    DPIHeight: number;
-    Model: string;
-    Software: string;
-    DateTime: string;
-    LensModel: string;
-    Latitude: number;
-    Longitude: number;
+  interface exif {
+    width: number;
+    height: number;
+    dpiWidth: number;
+    dpiHeight: number;
+    model: string;
+    software: string;
+    dateTime: string;
+    lensModel: string;
+  }
+
+  interface verification {
+    service: string;
+    mediaHash: string;
+    uuid: string;
+    dateTime: string;
+    latitude: number;
+    longitude: number;
+    signature: string;
   }
 
   interface sendData {
@@ -123,13 +134,8 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
       trait_type: string;
       value: string;
     }>;
-    data: data;
-    verification: {
-      service: string;
-      hash: string;
-      uuid: string;
-      signature: string;
-    };
+    exif: exif;
+    verification: verification;
     userPk: unknown;
     contractAddress: unknown;
   }
@@ -149,24 +155,27 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         { trait_type: 'Level', value: '5' },
         { trait_type: 'Str', value: '500' },
       ],
-      data: {
-        Width: metaInfo.width,
-        Height: metaInfo.height,
-        DPIWidth: metaInfo.metadata.DPIWidth,
-        DPIHeight: metaInfo.metadata.DPIHeight,
-        Model: metaInfo.metadata['{TIFF}'].Model,
-        Software: metaInfo.metadata['{TIFF}'].Software,
-        DateTime: metaInfo.metadata['{TIFF}'].DateTime,
-        LensModel: metaInfo.metadata['{Exif}'].LensModel,
-        Latitude: location.latitude,
-        Longitude: location.longitude,
+      exif: {
+        width: metaInfo.width,
+        height: metaInfo.height,
+        dpiWidth: metaInfo.metadata.DPIWidth,
+        dpiHeight: metaInfo.metadata.DPIHeight,
+        model: metaInfo.metadata['{TIFF}'].Model,
+        software: metaInfo.metadata['{TIFF}'].Software,
+        dateTime: metaInfo.metadata['{TIFF}'].DateTime,
+        lensModel: metaInfo.metadata['{Exif}'].LensModel,
       },
       verification: {
-        service: 'B-SquareLab',
-        hash: '0xhash',
+        service: 'B-Square Lab',
+        mediaHash: hash,
         uuid: uniqueId,
-        signature: '0xsig',
+        dateTime: metaInfo.metadata['{TIFF}'].DateTime,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        signature: signature,
       },
+      // TODO: Remove from .env
+      // TODO: Using ethers.js to make userPk
       userPk: Config.USER_PK,
       contractAddress: Config.CONTRACT_ADDRESS,
     };
@@ -213,25 +222,28 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
             <>
               <ScrollView style={styles.scrollView}>
                 <Text style={styles.metaInfo}>
-                  Width : "{JSON.stringify(metaInfo.width)}" {'\n'}
-                  Height : "{JSON.stringify(metaInfo.height)}" {'\n'}
-                  Path : "{JSON.stringify(path)}" {'\n'}
-                  DPIWidth : "{JSON.stringify(metaInfo.metadata.DPIWidth)}" {'\n'}
-                  DPIHeight : "{JSON.stringify(metaInfo.metadata.DPIHeight)}" {'\n'}
-                  Model : {JSON.stringify(metaInfo.metadata['{TIFF}'].Model)} {'\n'}
-                  Software : {JSON.stringify(metaInfo.metadata['{TIFF}'].Software)} {'\n'}
-                  DateTime : {JSON.stringify(metaInfo.metadata['{TIFF}'].DateTime)} {'\n'}
-                  LensModel : {JSON.stringify(metaInfo.metadata['{Exif}'].LensModel)} {'\n'}
+                  width : "{JSON.stringify(metaInfo.width)}" {'\n'}
+                  height : "{JSON.stringify(metaInfo.height)}" {'\n'}
+                  path : "{JSON.stringify(path)}" {'\n'}
+                  dpiWidth : "{JSON.stringify(metaInfo.metadata.DPIWidth)}" {'\n'}
+                  dpiHeight : "{JSON.stringify(metaInfo.metadata.DPIHeight)}" {'\n'}
+                  model : {JSON.stringify(metaInfo.metadata['{TIFF}'].Model)} {'\n'}
+                  software : {JSON.stringify(metaInfo.metadata['{TIFF}'].Software)} {'\n'}
+                  dateTime : {JSON.stringify(metaInfo.metadata['{TIFF}'].DateTime)} {'\n'}
+                  lensModel : {JSON.stringify(metaInfo.metadata['{Exif}'].LensModel)}
                 </Text>
                 <Text style={styles.deviceInfo}>
-                  UTC : {new Date().toISOString()} {'\n'}
-                  UUID : {uniqueId} {'\n'}
+                  service : {'B-Square Lab'} {'\n'}
+                  mediaHash : {hash} {'\n'}
+                  uuid : {uniqueId} {'\n'}
+                  dateTime : {new Date().toLocaleString()} {'\n'}
                   {location != null && (
                     <>
-                      Latitude : {location.latitude} {'\n'}
-                      Longitude : {location.longitude} {'\n'}
+                      latitude : {location.latitude} {'\n'}
+                      longitude : {location.longitude} {'\n'}
                     </>
                   )}
+                  signature : {signature}
                 </Text>
               </ScrollView>
               <NaverMapView style={{ width: '100%', height: '45%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
