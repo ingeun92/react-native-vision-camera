@@ -51,7 +51,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const isVideoPaused = !isForeground || !isScreenFocused;
   const [savingState, setSavingState] = useState<'none' | 'saving' | 'saved'>('none');
 
-  const [location, setLocation] = useState<ILocation | undefined>(undefined);
+  const [location, setLocation] = useState<ILocation | any>(undefined);
   const [enableMetadataView, setEnableMetaDataView] = useState(false);
 
   const [uniqueId, setUniqueId] = useState<string>('');
@@ -111,6 +111,8 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
     Software: string;
     DateTime: string;
     LensModel: string;
+    Latitude: number;
+    Longitude: number;
   }
 
   interface sendData {
@@ -156,6 +158,8 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         Software: metaInfo.metadata['{TIFF}'].Software,
         DateTime: metaInfo.metadata['{TIFF}'].DateTime,
         LensModel: metaInfo.metadata['{Exif}'].LensModel,
+        Latitude: location.latitude,
+        Longitude: location.longitude,
       },
       verification: {
         service: 'B-SquareLab',
@@ -225,7 +229,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                   {location != null && (
                     <>
                       Latitude : {location.latitude} {'\n'}
-                      longitude : {location.longitude} {'\n'}
+                      Longitude : {location.longitude} {'\n'}
                     </>
                   )}
                 </Text>
