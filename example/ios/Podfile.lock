@@ -210,25 +210,23 @@ PODS:
   - React-jsinspector (0.66.4)
   - React-logger (0.66.4):
     - glog
-  - react-native-blur (4.1.0):
-    - React-Core
+  - react-native-blur (0.8.0):
+    - React
   - react-native-cameraroll (4.1.2):
     - React-Core
   - react-native-config (1.4.6):
     - react-native-config/App (= 1.4.6)
   - react-native-config/App (1.4.6):
     - React-Core
+  - react-native-exif (0.5.0):
+    - React
   - react-native-geolocation-service (5.3.0):
     - React
   - react-native-nmap (0.0.66):
     - NMapsMap
     - React
-  - react-native-safe-area-context (4.3.1):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
-    - React
-    - ReactCommon/turbomodule/core
+  - react-native-safe-area-context (3.4.1):
+    - React-Core
   - react-native-slider (4.2.4):
     - React-Core
   - react-native-video (5.2.0):
@@ -303,7 +301,7 @@ PODS:
     - React-perflogger (= 0.66.4)
   - RNDeviceInfo (10.0.2):
     - React-Core
-  - RNGestureHandler (2.5.0):
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNReanimated (2.9.1):
     - DoubleConversion
@@ -368,6 +366,7 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-exif (from `../node_modules/react-native-exif`)
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-nmap (from `../node_modules/react-native-nmap`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -440,6 +439,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-exif:
+    :path: "../node_modules/react-native-exif"
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-nmap:
@@ -511,12 +512,13 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
-  react-native-blur: ba2f37268542f8a26d809f48c5162705a3261fc6
+  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 2957f2bce63ae896a848fbe0d5352c1bd4d20866
   react-native-config: 7cd105e71d903104e8919261480858940a6b9c0e
+  react-native-exif: c43e7c18af8bfa133c79145671a0f036e413468e
   react-native-geolocation-service: f32ef48fa665bd710207a3ac39bc127cac9cb993
   react-native-nmap: cfcc5402746040494c544ea90a6062f49505acdf
-  react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
+  react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-slider: cecabb58ecffad671d2ad3ccc58c7f4d2d029e95
   react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
@@ -532,7 +534,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   RNDeviceInfo: 0a7c1d2532aa7691f9b9925a27e43af006db4dae
-  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 11e6e30bbc49079b7f0c321ac5830e6d113d0224
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNStaticSafeAreaInsets: bb611be967ba27ced2fbf9aca0f067a786175ea6
