@@ -1,8 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, ScrollView, ActivityIndicator, PermissionsAndroid, Platform } from 'react-native';
 import Video, { LoadError, OnLoadData } from 'react-native-video';
@@ -52,7 +52,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const isVideoPaused = !isForeground || !isScreenFocused;
   const [savingState, setSavingState] = useState<'none' | 'saving' | 'saved'>('none');
 
-  const [location, setLocation] = useState<ILocation | any>(undefined);
+  const [location, setLocation] = useState<ILocation | undefined>(undefined);
   const [enableMetadataView, setEnableMetaDataView] = useState(false);
 
   const [uniqueId, setUniqueId] = useState<string>('');
@@ -148,7 +148,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const mintPicture = async (): Promise<void> => {
     getUuid();
     const sendData: sendData = {
-      name: 'Test220726',
+      name: 'Test220729',
       description: 'Test NFT for NFTCamera',
       image: path,
       attributes: [
@@ -220,13 +220,16 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         <ImageBackground source={source} style={StyleSheet.absoluteFill} resizeMode="cover" onLoadEnd={onMediaLoadEnd} onLoad={onMediaLoad}>
           {enableMetadataView && (
             <>
-              <ScrollView style={styles.scrollView}>
+              <View style={styles.dataView}>
                 <Text style={styles.metaInfo}>
-                  width : "{JSON.stringify(metaInfo.width)}" {'\n'}
                   height : "{JSON.stringify(metaInfo.height)}" {'\n'}
-                  path : "{JSON.stringify(path)}" {'\n'}
-                  dpiWidth : "{JSON.stringify(metaInfo.metadata.DPIWidth)}" {'\n'}
-                  dpiHeight : "{JSON.stringify(metaInfo.metadata.DPIHeight)}" {'\n'}
+                  path : "{path}" {'\n'}
+                  {Platform.OS === 'ios' && (
+                    <>
+                      dpiWidth : "{JSON.stringify(metaInfo.metadata.DPIWidth)}" {'\n'}
+                      dpiHeight : "{JSON.stringify(metaInfo.metadata.DPIHeight)}" {'\n'}
+                    </>
+                  )}
                   model : {JSON.stringify(metaInfo.metadata['{TIFF}'].Model)} {'\n'}
                   software : {JSON.stringify(metaInfo.metadata['{TIFF}'].Software)} {'\n'}
                   dateTime : {JSON.stringify(metaInfo.metadata['{TIFF}'].DateTime)} {'\n'}
@@ -245,7 +248,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                   )}
                   signature : {signature}
                 </Text>
-              </ScrollView>
+              </View>
               <NaverMapView style={{ width: '100%', height: '45%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
                 <Marker coordinate={location} />
               </NaverMapView>
@@ -342,7 +345,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
-  scrollView: {
+  dataView: {
+    flex: 1,
     backgroundColor: 'rgba(59, 59, 59, 0.3)',
   },
   metaInfo: {
