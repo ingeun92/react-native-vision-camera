@@ -62,7 +62,7 @@ export function CameraPage({ navigation }: Props): React.ReactElement {
   }, [device?.formats]);
 
   //#region Memos
-  const [is60Fps, setIs60Fps] = useState(true);
+  const [is60Fps, setIs60Fps] = useState(false);
   const fps = useMemo(() => {
     if (!is60Fps) return 30;
 
@@ -228,9 +228,10 @@ export function CameraPage({ navigation }: Props): React.ReactElement {
                 enableZoomGesture={false}
                 animatedProps={cameraAnimatedProps}
                 photo={true}
-                video={true}
+                video={false}
                 audio={hasMicrophonePermission}
                 frameProcessor={device.supportsParallelVideoProcessing ? frameProcessor : undefined}
+                // frameProcessor={undefined}
                 orientation="portrait"
                 frameProcessorFps={1}
                 onFrameProcessorPerformanceSuggestionAvailable={onFrameProcessorSuggestionAvailable}
