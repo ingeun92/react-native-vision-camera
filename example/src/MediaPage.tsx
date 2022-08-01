@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-shadow */
@@ -53,6 +54,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
   const [savingState, setSavingState] = useState<'none' | 'saving' | 'saved'>('none');
 
   const [location, setLocation] = useState<ILocation | undefined>(undefined);
+  const [isGeolocationPermission, setIsGeolocationPermission] = useState<boolean>(false);
   const [enableMetadataView, setEnableMetaDataView] = useState(false);
 
   const [uniqueId, setUniqueId] = useState<string>('');
@@ -194,23 +196,40 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
     }
   };
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') Geolocation.requestAuthorization('always');
+  const checkGeoloactionPermission = async (): Promise<void> => {
+    try {
+      if (Platform.OS === 'ios') Geolocation.requestAuthorization('always');
+      if (Platform.OS === 'android') await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
 
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({
-          latitude,
-          longitude,
-        });
-      },
-      (error) => {
-        console.log(error.code, error.message);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-    );
-  }, []);
+      setIsGeolocationPermission(true);
+    } catch (error) {
+      console.log('checkGeolocationPermission: ', error);
+    }
+  };
+
+  const getGeolocationPostition = async (): Promise<void> => {
+    await checkGeoloactionPermission();
+
+    if (isGeolocationPermission) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({
+            latitude,
+            longitude,
+          });
+        },
+        (error) => {
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+      );
+    }
+  };
+
+  useEffect(() => {
+    getGeolocationPostition();
+  }, [location]);
 
   return (
     <View style={[styles.container, screenStyle]}>
@@ -249,9 +268,13 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
                   signature : {signature}
                 </Text>
               </View>
-              <NaverMapView style={{ width: '100%', height: '45%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
-                <Marker coordinate={location} />
-              </NaverMapView>
+              {!(location?.latitude === undefined) ? (
+                <NaverMapView style={{ width: '100%', height: '45%' }} showsMyLocationButton={true} center={{ ...location, zoom: 16 }}>
+                  <Marker coordinate={location} />
+                </NaverMapView>
+              ) : (
+                <View />
+              )}
             </>
           )}
 
@@ -307,6 +330,7 @@ export function MediaPage({ navigation, route }: Props): React.ReactElement {
         onPress={() => {
           setEnableMetaDataView(!enableMetadataView);
           getUuid();
+          getGeolocationPostition();
         }}>
         <IonIcon name="shield-checkmark-outline" size={35} color={enableMetadataView ? 'blue' : 'white'} style={styles.icon} />
       </PressableOpacity>
